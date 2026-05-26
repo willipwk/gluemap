@@ -1,5 +1,5 @@
 # GLUEMAP: Global Structure-from-Motion Meets Feedforward Reconstruction
-[Project page](https://lpanaf.github.io/cvpr26_gluemap/) | [Paper]([arxiv.org/abs/2605.26103](https://arxiv.org/abs/2605.26103))
+[Project page](https://lpanaf.github.io/cvpr26_gluemap/) | [Paper](https://arxiv.org/abs/2605.26103)
 ---
 
 ## About
