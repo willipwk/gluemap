@@ -32,7 +32,7 @@ from gluemap.utils.colmap import (
 logger = logging.getLogger(__name__)
 
 
-class GlueMapPipeline:
+class GluemapPipeline:
     """
     Main GLUEMAP pipeline: twoview -> star -> global mapping -> refinement.
 
@@ -214,7 +214,7 @@ class GlueMapPipeline:
 
         # Step 4: Global mapping
         t0 = time.perf_counter()
-        GlueMapPipeline.restore_image_shape(
+        GluemapPipeline.restore_image_shape(
             predictions_dict, dataset.images_change, dataset.images_shape_ori
         )
 
@@ -397,8 +397,8 @@ def run_inference_pipeline(
     pairs: list[tuple[int, int]] | None = None,
     models: dict[str, torch.nn.Module] | None = None,
 ) -> tuple[str | None, dict]:
-    """Backward-compatible wrapper for GlueMapPipeline.run()."""
-    pipeline = GlueMapPipeline(
+    """Backward-compatible wrapper for GluemapPipeline.run()."""
+    pipeline = GluemapPipeline(
         args, world_size, rank, device, dtype, models=models
     )
     return pipeline.run(dataset_pair, pairs=pairs)
@@ -411,8 +411,8 @@ def run_postprocessing_pipeline(
     dataset: BaseStarDataset,
     pairs: list[tuple[int, int]] | None = None,
 ) -> tuple[str, dict]:
-    """Backward-compatible wrapper for GlueMapPipeline.run_postprocessing()."""
-    return GlueMapPipeline.run_postprocessing(
+    """Backward-compatible wrapper for GluemapPipeline.run_postprocessing()."""
+    return GluemapPipeline.run_postprocessing(
         args,
         predictions_dict,
         dataset_pair,

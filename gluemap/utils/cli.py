@@ -42,7 +42,7 @@ def load_config(config_path: str) -> dict[str, Any]:
 
 
 def get_args_parser() -> argparse.ArgumentParser:
-    """Build the argparse parser for the GlueMap demo pipeline."""
+    """Build the argparse parser for the GLUEMAP demo pipeline."""
     parser = argparse.ArgumentParser("Distributed Demo Pipeline", add_help=True)
 
     parser.add_argument(

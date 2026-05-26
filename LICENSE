@@ -1,7 +1,7 @@
-GlueMap is licensed under the new BSD license. Note that this text refers
-only to the license for GlueMap itself, independent of its thirdparty
-dependencies, which are separately licensed. Building GlueMap with these
-dependencies may affect the resulting GlueMap license.
+GLUEMAP is licensed under the new BSD license. Note that this text refers
+only to the license for GLUEMAP itself, independent of its thirdparty
+dependencies, which are separately licensed. Building GLUEMAP with these
+dependencies may affect the resulting GLUEMAP license.
 
     Copyright (c), ETH Zurich.
     All rights reserved.

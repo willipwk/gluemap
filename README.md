@@ -4,7 +4,7 @@
 
 ## About
 
-GlueMap is the first Structure-from-Motion pipeline to integrate
+GLUEMAP is the first Structure-from-Motion pipeline to integrate
 feed-forward reconstruction backbones into a global SfM framework.
 It takes a collection of images as input and outputs a COLMAP sparse reconstruction. 
 It matches the scalability and accuracy of traditional SfM pipelines while inheriting the local robustness of a feed-forward backbone.
@@ -35,7 +35,7 @@ If you use this project for your research, please cite
 
 ## Getting Started
 
-GlueMap is a Python package with a C++/pybind11 extension (`pygluemap`)
+GLUEMAP is a Python package with a C++/pybind11 extension (`pygluemap`)
 that links against Ceres, Eigen, Boost, and OpenMP, plus several
 feed-forward models vendored as git submodules.
 
@@ -189,7 +189,7 @@ dispatches on the `chosen_model` string set in your config.
 
 ## Acknowledgments
 
-GlueMap stands on a stack of upstream feed-forward and geometry models:
+GLUEMAP stands on a stack of upstream feed-forward and geometry models:
 
 - [COLMAP](https://github.com/colmap/colmap) — output format and broader SfM ecosystem
 - [Doppelgangers++](https://github.com/doppelgangers25/doppelgangers-plusplus) — two-view disambiguator (with MAST3R / DUSt3R / CroCo)
@@ -215,10 +215,10 @@ should be submitted in the form of new issues and/or pull requests on GitHub.
 
 ## License
 
-GlueMap is licensed under the new BSD license. Note that this text refers
-only to the license for GlueMap itself, independent of its thirdparty
-dependencies, which are separately licensed. Building GlueMap with these
-dependencies may affect the resulting GlueMap license.
+GLUEMAP is licensed under the new BSD license. Note that this text refers
+only to the license for GLUEMAP itself, independent of its thirdparty
+dependencies, which are separately licensed. Building GLUEMAP with these
+dependencies may affect the resulting GLUEMAP license.
 
     Copyright (c), ETH Zurich.
     All rights reserved.
