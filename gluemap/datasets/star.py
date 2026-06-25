@@ -12,6 +12,7 @@ from gluemap.estimators.feature_extraction import (
     get_query_points_from_extractors,
 )
 from gluemap.utils.load_fn import calculate_image_shapes
+from gluemap.utils.model_specs import get_backbone_input_spec
 
 logger = logging.getLogger(__name__)
 
@@ -35,8 +36,9 @@ class BaseStarDataset(DemoBaseDataset):
             args: Parsed CLI/config namespace. Reads optional
                 ``num_track_per_img`` (default ``1024``).
         """
-        self.image_size = 518
-        self.patch_size = 14
+        input_spec = get_backbone_input_spec(getattr(args, "chosen_model", "pi3"))
+        self.image_size = input_spec.image_size
+        self.patch_size = input_spec.patch_size
 
         self.num_tracks = (
             args.num_track_per_img
@@ -257,23 +259,29 @@ class BaseStarDataset(DemoBaseDataset):
 
         # calculate the image_changes
         if self.force_square:
-            new_shape_hw = (518, 518)
+            new_shape_hw = (self.image_size, self.image_size)
         else:
             # find the shape
             ori_shape = self.images_shape_ori[0]
             height, width = ori_shape
 
             if width > height:
-                new_width = 518
+                new_width = self.image_size
 
-                # Calculate height maintaining aspect ratio, divisible by 14
-                new_height = round(height * (new_width / width))
+                # Calculate height maintaining aspect ratio and patch grid
+                new_height = (
+                    round(height * (new_width / width) / self.patch_size)
+                    * self.patch_size
+                )
 
             else:
-                new_height = 518
+                new_height = self.image_size
 
-                # Calculate width maintaining aspect ratio, divisible by 14
-                new_width = round(width * (new_height / height))
+                # Calculate width maintaining aspect ratio and patch grid
+                new_width = (
+                    round(width * (new_height / height) / self.patch_size)
+                    * self.patch_size
+                )
 
             new_shape_hw = (new_height, new_width)
 

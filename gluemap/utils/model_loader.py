@@ -1,11 +1,28 @@
 import argparse
 import os
+import sys
 
 import numpy as np
 import torch
 from safetensors.torch import load_file
 
 import thirdparty.path_to_thirdparty  # noqa: F401  (adds all thirdparty submodules to sys.path)
+
+
+def _ensure_vggt_omega_on_path() -> None:
+    """Make the sibling ``third_party/vggt-omega`` checkout importable."""
+    try:
+        import vggt_omega  # noqa: F401
+
+        return
+    except ImportError:
+        pass
+
+    repo_path = os.path.normpath(
+        os.path.join(os.path.dirname(__file__), "../../../vggt-omega")
+    )
+    if os.path.exists(os.path.join(repo_path, "vggt_omega")):
+        sys.path.insert(0, repo_path)
 
 
 def _import_vpr_model() -> type:
@@ -56,8 +73,9 @@ def load_models(
 
     Each entry in ``keys`` triggers loading of one model:
 
-    * ``"pi3"`` / ``"pi3x"`` / ``"vggt"`` / ``"map_anything"`` — multi-view
-      pose backbones, weights from ``args.path_feedforward``.
+    * ``"pi3"`` / ``"pi3x"`` / ``"vggt"`` / ``"map_anything"`` /
+      ``"vggt_omega"`` — multi-view pose backbones, weights from
+      ``args.path_feedforward``.
     * ``"dg"`` — Doppelganger++ (MASt3R), weights from ``args.path_dg``.
     * ``"vggsfm"`` — VGGSfM tracker, weights from ``args.path_tracker``.
     * ``"salad"`` — SALAD VPR descriptor, weights from
@@ -115,6 +133,16 @@ def load_models(
 
         models["map_anything"] = MapAnything.from_pretrained(
             args.path_feedforward
+        )
+    elif chosen_model == "vggt_omega" and chosen_model in keys:
+        _ensure_vggt_omega_on_path()
+        from vggt_omega.models import VGGTOmega
+
+        models["vggt_omega"] = VGGTOmega()
+        models["vggt_omega"].load_state_dict(
+            torch.load(
+                args.path_feedforward, map_location="cpu", weights_only=False
+            )
         )
 
     # Load Doppelganger++

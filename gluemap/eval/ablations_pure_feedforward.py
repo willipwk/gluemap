@@ -8,6 +8,7 @@ from gluemap.ff_inference.local_inference import create_local_inference
 from gluemap.math.scaling import rescale_intrinsics
 from gluemap.utils.colmap import write_to_colmap_format
 from gluemap.utils.model_loader import load_models
+from gluemap.utils.model_specs import get_backbone_input_spec
 
 logger = logging.getLogger(__name__)
 
@@ -136,9 +137,9 @@ def run_direct_inference_pipeline(
         timing["forward_pass"] = 0.0
     else:
         # Step 2: Prepare images
-        # (always load at 518px / patch_size=14 for backbone)
         t0 = time.perf_counter()
         N = len(dataset_pair.images_list)
+        input_spec = get_backbone_input_spec(backbone)
 
         from gluemap.utils.load_fn import load_and_preprocess_images
 
@@ -151,8 +152,8 @@ def run_direct_inference_pipeline(
         force_square = getattr(dataset_pair, "force_square", True)
         images, images_ori, images_change = load_and_preprocess_images(
             image_paths,
-            image_size=518,
-            patch_size=14,
+            image_size=input_spec.image_size,
+            patch_size=input_spec.patch_size,
             force_square=force_square,
         )
         images = images.unsqueeze(0).float()  # (1, N, 3, H, W)

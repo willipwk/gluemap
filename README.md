@@ -14,7 +14,7 @@ The pipeline comprises:
 
 1. **Retrieval** — SALAD global descriptors build the image neighbor graph.
 2. **Two-view inference (optional)** — Doppelgangers++ (MAST3R-based) estimates covisibility of pairs. Can be skipped via `skip_doppelgangers` when the scene has no repetitive structure or when a quick result is preferred (see [Configuration](#configuration)).
-3. **Multi-view inference** — a configurable backbone (Pi3 / Pi3X / VGGT / MapAnything) estimates poses and geometry in local star configurations.
+3. **Multi-view inference** — a configurable backbone (Pi3 / Pi3X / VGGT / VGGT-Omega / MapAnything) estimates poses and geometry in local star configurations.
 4. **Global mapping** — rotation averaging, intrinsics averaging,
    similarity averaging, and global bundle adjustment fuse the local solutions.
 5. **Refinement** — SIFT track snapping with iterative augmented bundle adjustment.
@@ -119,7 +119,7 @@ The most-touched knobs:
 | Key | Description |
 |---|---|
 | `images_path` / `write_path` | Input directory / output directory. |
-| `chosen_model` | Multi-view backbone: `pi3` (default), `pi3x`, `vggt`, `map_anything`. |
+| `chosen_model` | Multi-view backbone: `pi3` (default), `pi3x`, `vggt`, `vggt_omega`, `map_anything`. |
 | `path_feedforward` | Checkpoint for the chosen multi-view model. |
 | `path_retrieval` / `path_tracker` / `path_dg` | SALAD / VGGSfM / Doppelgangers++ checkpoints. |
 | `camera_model` | COLMAP camera model (default `SIMPLE_PINHOLE`). |
@@ -144,6 +144,10 @@ backbone needs its own `path_feedforward` checkpoint:
 - **`pi3x`** — Pi3X variant; same Pi3 checkpoint family.
 - **`vggt`** — Facebook VGGT-1B; download `model.pt` from
   HuggingFace `facebook/VGGT-1B`.
+- **`vggt_omega`** — VGGT-Omega; use
+  `../vggt-omega/checkpoints/vggt_omega_1b_512.pt` when running from the
+  `third_party/gluemap` directory, or start from
+  [configs/vggt_omega.yaml](configs/vggt_omega.yaml).
 - **`map_anything`** — Facebook MapAnything; set
   `path_feedforward: facebook/map-anything` (HF repo id, not a file path).
 
@@ -171,6 +175,7 @@ Use the existing wrappers as references:
 
 - [gluemap/ff_inference/pi3_inference.py](gluemap/ff_inference/pi3_inference.py)
 - [gluemap/ff_inference/vggt_inference.py](gluemap/ff_inference/vggt_inference.py)
+- [gluemap/ff_inference/vggt_omega_inference.py](gluemap/ff_inference/vggt_omega_inference.py)
 - [gluemap/ff_inference/mapanything_inference.py](gluemap/ff_inference/mapanything_inference.py)
 
 Then register the new wrapper in `create_local_inference()` in

@@ -1,0 +1,6 @@
+# VGGT-Omega demo config. Override images_path / write_path for your scene.
+
+_base_: example.yaml
+
+chosen_model: vggt_omega
+path_feedforward: ../vggt-omega/checkpoints/vggt_omega_1b_512.pt
