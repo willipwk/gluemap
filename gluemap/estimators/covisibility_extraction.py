@@ -2,6 +2,9 @@ import einops
 import networkx as nx
 import torch
 
+import logging
+logger = logging.getLogger(__name__)
+
 from gluemap.math.geometry import (
     bilinear_interpolate_value,
     project,
@@ -222,7 +225,7 @@ class CovisibilityExtraction:
         ori_depth = torch.where(
             valid_depth_mask, depth[:, 0][..., 0], median_depth
         ).unsqueeze(-1)  # (B, H, W, 1)
-        selected_depth = ori_depth[:, 7::14, 7::14]
+        selected_depth = ori_depth[:, 7:H // 14 * 14:14, 7:W // 14 * 14:14]
         # Add noise to the depth with 10% of the current depth as the noise
         noise = torch.randn_like(selected_depth) * 0.1 * selected_depth
         sampled_depth = selected_depth + noise
